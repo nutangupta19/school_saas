@@ -7,6 +7,7 @@ const crypto    = require('crypto')
 const SchoolModel = require('../../../central-db/models/School.model')
 const getUserModel = require('../../../school-db/academics/User.model')
 const { evictSchoolConnection } = require('../../../middleware/schoolResolver.middleware')
+const { sendSchoolAdminCredentials } = require('../../../utils/emailTemplates')
 
 // ─── Generate a random temp password ─────────────────────────────────────────
 const generateTempPassword = () => {
@@ -110,13 +111,13 @@ registerSchool : async ({
     })
 
     // 5. Send credentials email (non-blocking — don't await)
-    // sendSchoolAdminCredentials({
-    //   adminName,
-    //   schoolName: name,
-    //   email:      adminEmail,
-    //   password:   tempPassword,
-    //   loginUrl:   `${process.env.CLIENT_URL}/${slug}/login`,
-    // }).catch((err) => console.error('Failed to send credentials email:', err.message))
+    sendSchoolAdminCredentials({
+      adminName,
+      schoolName: name,
+      email:      adminEmail,
+      password:   tempPassword,
+      loginUrl:   `${process.env.CLIENT_URL}/${slug}/login`,
+    }).catch((err) => console.error('Failed to send credentials email:', err.message))
 
     await schoolConn.close()
 

@@ -1,30 +1,44 @@
 // const schoolService = require("./school.service")
 
+const { responseData } = require('../../../utils/responseData')
 const schoolService = require("./school.service")
 
 const schoolController = {
 
   // ─── Register School ─────────────────────────────────────────────
-  registerSchool: async (req, res, next) => {
-    try {
+ registerSchool: async (req, res, next) => {
+  try {
 
-      const superAdminId = req.user._id   // from auth middleware
-console.log(superAdminId)
-      const school = await schoolService.registerSchool({
-        ...req.body,
-        superAdminId
-      })
+    const superAdminId = req.user._id
+    console.log(superAdminId)
 
-      res.status(201).json({
-        success: true,
-        message: "School registered successfully",
-        data: school
-      })
+    const school = await schoolService.registerSchool({
+      ...req.body,
+      superAdminId
+    })
 
-    } catch (error) {
-      next(error)
-    }
-  },
+    return res.status(201).json(
+      responseData(
+        "SCHOOL_REGISTERED_SUCCESSFULLY",
+        school,
+        req,
+        true
+      )
+    )
+
+  } catch (error) {
+
+    return res.status(error.statusCode || 500).json(
+      responseData(
+        error.message || "SOMETHING_WENT_WRONG",
+        null,
+        req,
+        false
+      )
+    )
+
+  }
+},
 
   // ─── Get All Schools ─────────────────────────────────────────────
   getAllSchools: async (req, res, next) => {
