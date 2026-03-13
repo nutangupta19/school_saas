@@ -2,35 +2,36 @@ const express = require("express")
 const router = express.Router()
 
 const schoolController = require("./school.controller")
+const { protectSuperAdmin } = require("../../../middleware/auth.middleware")
+// const { protectSuperAdmin } = require("../../../middleware/auth.middleware")
 
 // Example auth middleware
-// const authenticateSuperAdmin = require("../../../middleware/auth")
+// const authenticateSuperAdmin = require("../../../middleware/auth.middleware")
 
 // ─── Register School ─────────────────────────────────────────────
 router.post(
   "/",
-  // authenticateSuperAdmin,
+protectSuperAdmin,
   schoolController.registerSchool
 )
 
 // ─── Get All Schools ─────────────────────────────────────────────
 router.get(
   "/",
-  // authenticateSuperAdmin,
+  protectSuperAdmin,
   schoolController.getAllSchools
 )
 
-// ─── Get Single School ───────────────────────────────────────────
+// // ─── Get Single School ───────────────────────────────────────────
 router.get(
-  "/:id",
-  // authenticateSuperAdmin,
+  "/:id", protectSuperAdmin,
   schoolController.getSchoolById
 )
 
-// ─── Activate / Deactivate School ────────────────────────────────
+// // ─── Activate / Deactivate School ────────────────────────────────
 router.patch(
   "/:id/status",
-  // authenticateSuperAdmin,
+  protectSuperAdmin,
   schoolController.toggleSchoolStatus
 )
 

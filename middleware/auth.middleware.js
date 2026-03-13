@@ -1,6 +1,7 @@
 const jwt         = require('jsonwebtoken')
-const getUserModel = require('../school-db/models/User.model')
+// const getUserModel = require('../school-db/models/User.model')
 const SuperAdmin   = require('../central-db/models/SuperAdmin.model')
+const { getUserModel } = require('../school-db/academics/User.model')
 
 // ─── Protect school routes ────────────────────────────────────────────────────
 const protect = async (req, res, next) => {
@@ -69,6 +70,7 @@ const protectSuperAdmin = async (req, res, next) => {
     let decoded
     try {
       decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+      console.log(decoded)
     } catch (err) {
       const message =
         err.name === 'TokenExpiredError'
@@ -77,7 +79,7 @@ const protectSuperAdmin = async (req, res, next) => {
       return res.status(401).json({ success: false, message })
     }
 
-    if (decoded.role !== 'superadmin') {
+    if (decoded.role !== 'SUPER_ADMIN') {
       return res.status(403).json({
         success: false,
         message: 'Access denied. SuperAdmin only.',
@@ -86,14 +88,14 @@ const protectSuperAdmin = async (req, res, next) => {
 
     const superAdmin = await SuperAdmin.findById(decoded.userId)
 
-    if (!superAdmin || !superAdmin.isActive) {
+    if (!superAdmin) {
       return res.status(401).json({
         success: false,
         message: 'SuperAdmin not found or account deactivated.',
       })
     }
-
-    req.superAdmin = superAdmin
+console.log(superAdmin,"wesdhux")
+    req.user = superAdmin
     next()
   } catch (err) {
     next(err)

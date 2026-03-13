@@ -5,6 +5,8 @@ const mongoose  = require('mongoose')
 // const { sendSchoolAdminCredentials } = require('../../../utils/sendEmail')
 const crypto    = require('crypto')
 const SchoolModel = require('../../../central-db/models/School.model')
+const getUserModel = require('../../../school-db/academics/User.model')
+const { evictSchoolConnection } = require('../../../middleware/schoolResolver.middleware')
 
 // ─── Generate a random temp password ─────────────────────────────────────────
 const generateTempPassword = () => {
@@ -67,7 +69,7 @@ registerSchool : async ({
     email,
     phone,
     address,
-    boardType,
+    // boardType,
     // logoUrl:      logoUrl || null,
     dbUri:        schoolDbUri,
     isActive:     true,
@@ -127,7 +129,7 @@ registerSchool : async ({
     }
     // If school was created but admin setup failed — rollback
     if (school._id && !(err.statusCode === 409)) {
-      await School.findByIdAndDelete(school._id).catch(() => {})
+      await SchoolModel.findByIdAndDelete(school._id).catch(() => {})
     }
     throw err
   }
@@ -173,6 +175,7 @@ getSchoolById : async (id) => {
   return school
 },
 toggleSchoolStatus : async (id, isActive) => {
+    console.log(typeof isActive)
   const school = await SchoolModel.findByIdAndUpdate(
     id,
     { isActive },

@@ -50,8 +50,7 @@ superAdminSchema.pre("save", async function (next) {
 })
 
 superAdminSchema.methods.comparePassword = async function (candidatePassword) {
-  console.log("candidatePassword:", candidatePassword, typeof candidatePassword)
-  console.log("dbPassword:", this.password, typeof this.password)
+
   return bcrypt.compare(candidatePassword, this.password)
 
 }

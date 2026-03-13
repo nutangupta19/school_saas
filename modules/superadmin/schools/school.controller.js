@@ -1,5 +1,7 @@
 // const schoolService = require("./school.service")
 
+const schoolService = require("./school.service")
+
 const schoolController = {
 
   // ─── Register School ─────────────────────────────────────────────
@@ -7,7 +9,7 @@ const schoolController = {
     try {
 
       const superAdminId = req.user._id   // from auth middleware
-
+console.log(superAdminId)
       const school = await schoolService.registerSchool({
         ...req.body,
         superAdminId
@@ -47,7 +49,7 @@ const schoolController = {
     }
   },
 
-  // ─── Get Single School ───────────────────────────────────────────
+//   // ─── Get Single School ───────────────────────────────────────────
   getSchoolById: async (req, res, next) => {
     try {
 
@@ -65,7 +67,7 @@ const schoolController = {
     }
   },
 
-  // ─── Activate / Deactivate School ────────────────────────────────
+//   // ─── Activate / Deactivate School ────────────────────────────────
   toggleSchoolStatus: async (req, res, next) => {
     try {
 
