@@ -13,7 +13,7 @@ loginSuperAdmin :async ({ email, password }) => {
   }
 
   const isMatch = await superAdmin.comparePassword(password)
-  console.log("isMathc",isMatch)
+  // console.log("isMathc",isMatch)
   if (!isMatch) {
     const err = new Error('Invalid credentials.')
     err.statusCode = 401
