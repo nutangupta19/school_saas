@@ -8,6 +8,7 @@ const morgan = require('morgan')
 const compression = require('compression')
 const superAdminRoutes = require("./modules/superadmin/auth/auth.routes")
 const superAdminSchoolROutes  = require("./modules/superadmin/schools/school.routes")
+const teacherRoutes  = require("./modules/teacher/teacher.routes")
 const app = express()
 
 // DB connection
@@ -38,6 +39,7 @@ app.use(express.urlencoded({ extended: true }))
 // })
 app.use('/api/v1/superadmin', superAdminRoutes)
 app.use('/api/v1/superadmin/school', superAdminSchoolROutes)
+app.use('/api/v1/admin/teacher', teacherRoutes)
 
 app.use((req, res) => {
   res.status(404).json({
