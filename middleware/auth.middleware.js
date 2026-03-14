@@ -1,10 +1,11 @@
 const jwt         = require('jsonwebtoken')
-// const getUserModel = require('../school-db/models/User.model')
+
 const SuperAdmin   = require('../central-db/models/SuperAdmin.model')
-const { getUserModel } = require('../school-db/academics/User.model')
+const getAdminModel = require('../school-db/admin/Admin.model')
+// const { getUserModel } = require('../school-db/academics/User.model')
 
 // ─── Protect school routes ────────────────────────────────────────────────────
-const protect = async (req, res, next) => {
+const protectAdmin = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization
 
@@ -20,6 +21,8 @@ const protect = async (req, res, next) => {
     let decoded
     try {
       decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+    //   const 
+      console.log(decoded)
     } catch (err) {
       const message =
         err.name === 'TokenExpiredError'
@@ -35,9 +38,9 @@ const protect = async (req, res, next) => {
         message: 'School context missing. Ensure schoolResolver runs before protect.',
       })
     }
-
-    const User = getUserModel(req.schoolDb)
-    const user = await User.findById(decoded.userId)
+console.log(req.schoolDb)
+    const Admin = getAdminModel(req.schoolDb)
+    const user = await Admin.findById(decoded.userId)
 
     if (!user || !user.isActive) {
       return res.status(401).json({
@@ -94,7 +97,7 @@ const protectSuperAdmin = async (req, res, next) => {
         message: 'SuperAdmin not found or account deactivated.',
       })
     }
-console.log(superAdmin,"wesdhux")
+// console.log(superAdmin,"wesdhux")
     req.user = superAdmin
     next()
   } catch (err) {
@@ -102,9 +105,7 @@ console.log(superAdmin,"wesdhux")
   }
 }
 
-// ─── RBAC — authorize specific roles ─────────────────────────────────────────
-// Usage: router.post('/students', protect, authorize('admin'), handler)
-//        router.post('/attendance', protect, authorize('admin', 'teacher'), handler)
+
 const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -122,4 +123,4 @@ const authorize = (...roles) => {
   }
 }
 
-module.exports = { protect, protectSuperAdmin, authorize }
+module.exports = { protectAdmin, protectSuperAdmin, authorize }

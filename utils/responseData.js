@@ -1,16 +1,17 @@
-const multiLang = require('multi-lang')
-const _ = multiLang('lang.json')
-const jwt = require('jsonwebtoken')
+
+
+
+const multiLang = require("multi-lang")
+const _ = multiLang("lang.json")
 
 module.exports = {
-  responseData: (message, result, req, success) => {
-    const language = req.headers['language'] ? req.headers['language'] : 'en'
-    let response = {}
-    response.success = success
-    response.message =
-      _(message, language) || _('SOMETHING_WENT_WRONG', language)
+  responseData: (message, result, req, success = true) => {
+    const language = req.headers["language"] || "en"
 
-    response.results = result
-    return response
+    return {
+      success,
+      message: _(message, language) || _("SOMETHING_WENT_WRONG", language),
+      results: result,
+    }
   },
 }

@@ -1,0 +1,10 @@
+{
+  "SCHOOL_REGISTERED_SUCCESS": "School registered successfully",
+  "SCHOOLS_FETCHED_SUCCESS": "Schools fetched successfully",
+  "SCHOOL_FETCHED_SUCCESS": "School fetched successfully",
+  "SCHOOL_STATUS_UPDATED": "School status updated",
+  "SCHOOL_ALREADY_EXISTS": "School already exists",
+  "ADMIN_EMAIL_ALREADY_EXISTS": "Admin email already exists",
+  "SCHOOL_NOT_FOUND": "School not found",
+  "SOMETHING_WENT_WRONG": "Something went wrong"
+}

@@ -7,7 +7,7 @@ const connectDB = require('./configs/db')
 // const app = require('./server')
 
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 4000
 
 const seedSuperAdmin = async () => {
   try {

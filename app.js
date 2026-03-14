@@ -6,16 +6,15 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const compression = require('compression')
-const superAdminRoutes = require("./modules/superadmin/auth/auth.routes")
-const superAdminSchoolROutes  = require("./modules/superadmin/schools/school.routes")
-const app = express()
 
-// DB connection
-// const connectDB = require('./configs/db')
+const app = express()
+const mainRouter = require("./routes/main.routes")
+
+
 
 const corsOption = {
   origin: [
-    'http://localhost:3000',
+    'http://localhost:5174',
     'http://localhost:5173',
     
   ],
@@ -32,12 +31,11 @@ app.use(express.json())
 app.set('trust proxy', true)
 app.use(express.urlencoded({ extended: true }))
 
-// Root route
-// app.get('/', (req, res) => {
-//   res.send(`API is Running on Port ${process.env.PORT}`)
-// })
-app.use('/api/v1/superadmin', superAdminRoutes)
-app.use('/api/v1/superadmin/school', superAdminSchoolROutes)
+app.get('/',(req,res)=>{
+    res.send({message:"API running"})
+})
+
+app.use('/api/v1', mainRouter)
 
 app.use((req, res) => {
   res.status(404).json({

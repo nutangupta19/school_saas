@@ -21,16 +21,6 @@ const loginUser = async ({ email, password, schoolDb, ipAddress, userAgent }) =>
 
   const accessToken  = generateAccessToken(user._id, user.role)
   const refreshToken= generateRefreshToken(user)
-
-//   const RefreshToken = getRefreshTokenModel(schoolDb)
-//   await RefreshToken.create({
-//     userId:    user._id,
-//     tokenHash: hashedToken,
-//     expiresAt,
-//     ipAddress,
-//     userAgent,
-//   })
-
   return { user, accessToken, refreshToken }
 }
 
